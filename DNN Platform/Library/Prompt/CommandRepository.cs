@@ -1,21 +1,24 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
-using DotNetNuke.Abstractions.Prompt;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Framework;
-using DotNetNuke.Framework.Reflections;
-using DotNetNuke.Services.Localization;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using System.Web.Caching;
-
 namespace DotNetNuke.Prompt
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text.RegularExpressions;
+    using System.Web.Caching;
+
+    using DotNetNuke.Abstractions.Prompt;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Framework.Reflections;
+    using DotNetNuke.Services.Localization;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     public class CommandRepository : ServiceLocator<ICommandRepository, CommandRepository>, ICommandRepository
     {
         /// <inheritdoc/>
@@ -37,7 +40,7 @@ namespace DotNetNuke.Prompt
             var allCommands = this.CommandList();
             if (allCommands.ContainsKey(commandName))
             {
-                return (IConsoleCommand)Activator.CreateInstance(Type.GetType(allCommands[commandName].TypeFullName));
+                return (IConsoleCommand)ActivatorUtilities.CreateInstance(Globals.DependencyProvider, Type.GetType(allCommands[commandName].TypeFullName));
             }
             return null;
         }
@@ -67,7 +70,13 @@ namespace DotNetNuke.Prompt
                 var version = assemblyName.Version.ToString();
                 var commandAttribute = (ConsoleCommandAttribute)attr;
                 var key = commandAttribute.Name.ToUpper();
-                var localResourceFile = ((IConsoleCommand)Activator.CreateInstance(cmd))?.LocalResourceFile;
+                
+                string localResourceFile;
+                using (var serviceScope = Globals.DependencyProvider.CreateScope())
+                {
+                    localResourceFile = ((IConsoleCommand)ActivatorUtilities.CreateInstance(serviceScope.ServiceProvider, cmd))?.LocalResourceFile;
+                }
+
                 commands.Add(key, new Command
                 {
                     Category = LocalizeString(commandAttribute.CategoryKey, localResourceFile),
@@ -133,7 +142,6 @@ namespace DotNetNuke.Prompt
             var camelCasedParts = SplitCamelCase(className);
             return string.Join("-", camelCasedParts.Select(x => x.ToLower()));
         }
-
         private static string[] SplitCamelCase(string source)
         {
             return Regex.Split(source, @"(?<!^)(?=[A-Z])");
