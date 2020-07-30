@@ -1440,6 +1440,7 @@ namespace Dnn.PersonaBar.Pages.Components
                     {
                         if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
                         {
+                            // TODO: enable dependency injection
                             var objObject = Reflection.CreateObject(newModule.DesktopModule.BusinessControllerClass, newModule.DesktopModule.BusinessControllerClass);
                             var o = objObject as IPortable;
                             if (o != null)
