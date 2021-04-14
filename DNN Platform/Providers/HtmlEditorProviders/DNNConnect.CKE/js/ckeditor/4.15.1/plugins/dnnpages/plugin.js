@@ -891,7 +891,7 @@
             var editor = ev.editor;
             var linkTypeChanged = function () {
                 var dialog = this.getDialog();
-                var partIds = ['urlOptions', 'localPageOptions', 'anchorOptions', 'emailOptions'],
+                var partIds = ['urlOptions', 'localPageOptions', 'anchorOptions', 'emailOptions', 'telOptions'],
                     typeValue = this.getValue(),
                     uploadTab = dialog.definition.getContents('upload'),
                     uploadInitiallyHidden = uploadTab && uploadTab.hidden;
@@ -925,7 +925,8 @@
                 [urlTitle, 'url'],
                 [editor.lang.dnnpages.dnnpages, 'localPage'],
                 [editor.lang.link.toAnchor, 'anchor'],
-                [editor.lang.link.toEmail, 'email']
+                [editor.lang.link.toEmail, 'email'],
+                [editor.lang.link.toPhone, 'tel']
             ];
             linkType.onChange = linkTypeChanged;
             infoTab.add({
