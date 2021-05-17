@@ -5,23 +5,23 @@
 namespace DNNConnect.CKEditorProvider.Constants
 {
     /// <summary>
-    /// The Language Direction
+    /// The Language Direction.
     /// </summary>
     public enum LanguageDirection
     {
         /// <summary>
         /// Indicate content direction will be the same with either the editor UI direction or page element direction depending on the creators
         /// </summary>
-        Inherit,
+        Inherit = 0,
 
         /// <summary>
         /// Language Direction Left to Right
         /// </summary>
-        LeftToRight,
+        LeftToRight = 1,
 
         /// <summary>
         /// Language Direction Right to Left
         /// </summary>
-        RightToLeft
+        RightToLeft = 2,
     }
 }
