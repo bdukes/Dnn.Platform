@@ -16,22 +16,22 @@ namespace DotNetNuke.Services.Installer.Writers
         public ContainerPackageWriter(PackageInfo package)
             : base(package)
         {
-            this.BasePath = "Portals\\_default\\Containers\\" + this.SkinPackage.SkinName;
+            this.BasePath = "Portals\\_default\\Containers\\" + this.SkinPackage.ThemeName;
         }
 
         /// <summary>Initializes a new instance of the <see cref="ContainerPackageWriter"/> class.</summary>
-        /// <param name="skinPackage"></param>
+        /// <param name="themePackage"></param>
         /// <param name="package"></param>
-        public ContainerPackageWriter(SkinPackageInfo skinPackage, PackageInfo package)
-            : base(skinPackage, package)
+        public ContainerPackageWriter(SkinPackageInfo themePackage, PackageInfo package)
+            : base(themePackage, package)
         {
-            this.BasePath = "Portals\\_default\\Containers\\" + skinPackage.SkinName;
+            this.BasePath = "Portals\\_default\\Containers\\" + themePackage.ThemeName;
         }
 
         /// <inheritdoc/>
         protected override void WriteFilesToManifest(XmlWriter writer)
         {
-            var containerFileWriter = new ContainerComponentWriter(this.SkinPackage.SkinName, this.BasePath, this.Files, this.Package);
+            var containerFileWriter = new ContainerComponentWriter(this.SkinPackage.ThemeName, this.BasePath, this.Files, this.Package);
             containerFileWriter.WriteManifest(writer);
         }
     }

@@ -774,7 +774,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     case PackageTypes.Skin:
                         var skinPackage = new SkinPackageInfo
                         {
-                            SkinName = package.Name,
+                            ThemeName = package.Name,
                             PackageID = package.PackageID,
                             SkinType = package.PackageType,
                         };

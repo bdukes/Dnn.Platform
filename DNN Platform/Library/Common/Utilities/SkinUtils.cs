@@ -6,7 +6,7 @@ namespace DotNetNuke.Common.Utilities;
 
 using System;
 
-using DotNetNuke.Abstractions.Skins;
+using DotNetNuke.Abstractions.Themes;
 
 /// <summary>
 /// Skin utilities.
@@ -17,12 +17,12 @@ public class SkinUtils
     /// <param name="type">The type of the skin package.</param>
     /// <returns>The database name of the skin package type.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="type"/> is not a valid skin package type.</exception>
-    public static string ToDatabaseName(SkinPackageType type)
+    public static string ToDatabaseName(ThemePackageType type)
     {
         return type switch
         {
-            SkinPackageType.Skin => "Skin",
-            SkinPackageType.Container => "Container",
+            ThemePackageType.Theme => "Skin",
+            ThemePackageType.Container => "Container",
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, "Invalid skin package type."),
         };
     }
@@ -31,7 +31,7 @@ public class SkinUtils
     /// <param name="databaseName">The database name of the skin package type.</param>
     /// <returns>The skin package type.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="databaseName"/> is not a valid skin package type database name.</exception>
-    public static SkinPackageType FromDatabaseName(string databaseName)
+    public static ThemePackageType FromDatabaseName(string databaseName)
     {
         if (databaseName == null)
         {
@@ -40,12 +40,12 @@ public class SkinUtils
 
         if (string.Equals(databaseName, "Skin", StringComparison.OrdinalIgnoreCase))
         {
-            return SkinPackageType.Skin;
+            return ThemePackageType.Theme;
         }
 
         if (string.Equals(databaseName, "Container", StringComparison.OrdinalIgnoreCase))
         {
-            return SkinPackageType.Container;
+            return ThemePackageType.Container;
         }
 
         throw new ArgumentOutOfRangeException(nameof(databaseName), databaseName, "Invalid skin package type database name.");

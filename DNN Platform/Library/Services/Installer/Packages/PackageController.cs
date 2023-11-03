@@ -63,14 +63,14 @@ namespace DotNetNuke.Services.Installer.Packages
                     case "Container":
                         // Need to get path of skin being deleted so we can call the public CanDeleteSkin function in the SkinController
                         string strRootSkin = package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase) ? SkinController.RootSkin : SkinController.RootContainer;
-                        SkinPackageInfo skinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
-                        string strFolderPath = Path.Combine(skinPackageInfo.PortalID == Null.NullInteger ? Path.Combine(Globals.HostMapPath, strRootSkin) : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), skinPackageInfo.SkinName);
+                        SkinPackageInfo themePackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
+                        string strFolderPath = Path.Combine(themePackageInfo.PortalID == Null.NullInteger ? Path.Combine(Globals.HostMapPath, strRootSkin) : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), themePackageInfo.ThemeName);
 
                         bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeSystemDirectoryMapPath);
-                        if (skinPackageInfo.PortalID != Null.NullInteger)
+                        if (themePackageInfo.PortalID != Null.NullInteger)
                         {
                             // To be compliant with all versions
-                            strFolderPath = Path.Combine(Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), skinPackageInfo.SkinName);
+                            strFolderPath = Path.Combine(Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), themePackageInfo.ThemeName);
                             bCanDelete = bCanDelete && SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);
                         }
 

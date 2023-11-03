@@ -11,7 +11,7 @@ namespace DotNetNuke.UI.Skins
     using System.Text.RegularExpressions;
 
     using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Abstractions.Skins;
+    using DotNetNuke.Abstractions.Themes;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.Skins
     /// Class    : SkinController
     ///
     /// <summary>    Handles the Business Control Layer for Skins.</summary>
-    public partial class SkinController : ISkinService
+    public partial class SkinController : IThemeService
     {
         private const string GlobalSkinPrefix = "[G]";
         private const string PortalSystemSkinPrefix = "[S]";
@@ -38,8 +38,8 @@ namespace DotNetNuke.UI.Skins
         private static readonly Regex SdirRegex = new Regex("\\[s]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex LdirRegex = new Regex("\\[l]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        /// <inheritdoc cref="ISkinService.RootSkin" />
-        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(SkinType)}.{nameof(ISkinService.GetFolderName)} instead. Scheduled removal in v12.0.0.")]
+        /// <inheritdoc cref="IThemeService.RootSkin" />
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(SkinType)}.{nameof(IThemeService.GetFolderName)} instead. Scheduled removal in v12.0.0.")]
         public static string RootSkin
         {
             get
@@ -48,8 +48,8 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <inheritdoc cref="ISkinService.RootContainer" />
-        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(SkinType)}.{nameof(ISkinService.GetFolderName)} instead. Scheduled removal in v12.0.0.")]
+        /// <inheritdoc cref="IThemeService.RootContainer" />
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(SkinType)}.{nameof(IThemeService.GetFolderName)} instead. Scheduled removal in v12.0.0.")]
         public static string RootContainer
         {
             get
@@ -58,22 +58,22 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <inheritdoc cref="ISkinService.AddSkin" />
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.AddSkin)} instead.")]
+        /// <inheritdoc cref="IThemeService.AddTheme" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.AddTheme)} instead.")]
         public static partial int AddSkin(int skinPackageID, string skinSrc)
         {
             return DataProvider.Instance().AddSkin(skinPackageID, skinSrc);
         }
 
-        /// <inheritdoc cref="ISkinService.AddSkinPackage" />
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.AddSkinPackage)} instead.")]
-        public static partial int AddSkinPackage(SkinPackageInfo skinPackage)
+        /// <inheritdoc cref="IThemeService.AddThemePackage" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.AddThemePackage)} instead.")]
+        public static partial int AddSkinPackage(SkinPackageInfo themePackage)
         {
-            return AddSkinPackage((ISkinPackageInfo)skinPackage);
+            return AddSkinPackage((IThemePackageInfo)themePackage);
         }
 
-        /// <inheritdoc cref="ISkinService.CanDeleteSkinFolder" />
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.CanDeleteSkinFolder)} instead.")]
+        /// <inheritdoc cref="IThemeService.CanDeleteThemeFolder" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.CanDeleteThemeFolder)} instead.")]
         public static partial bool CanDeleteSkin(string folderPath, string portalHomeDirMapPath)
         {
             string skinType;
@@ -125,18 +125,18 @@ namespace DotNetNuke.UI.Skins
             return canDelete;
         }
 
-        /// <inheritdoc cref="ISkinService.DeleteSkin" />
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.DeleteSkin)} instead.")]
+        /// <inheritdoc cref="IThemeService.DeleteTheme" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.DeleteTheme)} instead.")]
         public static partial void DeleteSkin(int skinID)
         {
             DataProvider.Instance().DeleteSkin(skinID);
         }
 
-        /// <inheritdoc cref="ISkinService.DeleteSkinPackage" />
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.DeleteSkinPackage)} instead.")]
-        public static partial void DeleteSkinPackage(SkinPackageInfo skinPackage)
+        /// <inheritdoc cref="IThemeService.DeleteThemePackage" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.DeleteThemePackage)} instead.")]
+        public static partial void DeleteSkinPackage(SkinPackageInfo themePackage)
         {
-            DeleteSkinPackage((ISkinPackageInfo)skinPackage);
+            DeleteSkinPackage((IThemePackageInfo)themePackage);
         }
 
         public static string FormatMessage(string title, string body, int level, bool isError)
@@ -166,8 +166,8 @@ namespace DotNetNuke.UI.Skins
             return message + ": " + body + Environment.NewLine;
         }
 
-        /// <inheritdoc cref="ISkinService.FormatSkinPath" />
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.FormatSkinPath)} instead.")]
+        /// <inheritdoc cref="IThemeService.FormatThemePath" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.FormatThemePath)} instead.")]
         public static partial string FormatSkinPath(string skinSrc)
         {
             string strSkinSrc = skinSrc;
@@ -179,8 +179,8 @@ namespace DotNetNuke.UI.Skins
             return strSkinSrc;
         }
 
-        /// <inheritdoc cref="ISkinService.FormatSkinSrc" />
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.FormatSkinSrc)} instead.")]
+        /// <inheritdoc cref="IThemeService.FormatThemeSource" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.FormatThemeSource)} instead.")]
         public static partial string FormatSkinSrc(string skinSrc, PortalSettings portalSettings)
         {
             return FormatSkinSrc(skinSrc, (IPortalSettings)portalSettings);
@@ -192,7 +192,7 @@ namespace DotNetNuke.UI.Skins
         /// To get the default admin container for the portal use <see cref="IPortalSettings.DefaultAdminContainer"/> instead.
         /// </remarks>
         /// <returns>The global default admin container.</returns>
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetDefaultSkinSrc)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.GetDefaultThemeSource)} instead.")]
         public static partial string GetDefaultAdminContainer()
         {
             SkinDefaults defaultContainer = SkinDefaults.GetSkinDefaults(SkinDefaultType.ContainerInfo);
@@ -205,7 +205,7 @@ namespace DotNetNuke.UI.Skins
         /// To get the default admin skin for the portal use <see cref="IPortalSettings.DefaultAdminSkin"/> instead.
         /// </remarks>
         /// <returns>The global default admin skin.</returns>
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetDefaultSkinSrc)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.GetDefaultThemeSource)} instead.")]
         public static partial string GetDefaultAdminSkin()
         {
             SkinDefaults defaultSkin = SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo);
@@ -218,7 +218,7 @@ namespace DotNetNuke.UI.Skins
         /// To get the default skin for the portal use <see cref="IPortalSettings.DefaultPortalSkin"/> instead.
         /// </remarks>
         /// <returns>The global default skin.</returns>
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetDefaultSkinSrc)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.GetDefaultThemeSource)} instead.")]
         public static partial string GetDefaultPortalContainer()
         {
             SkinDefaults defaultContainer = SkinDefaults.GetSkinDefaults(SkinDefaultType.ContainerInfo);
@@ -231,36 +231,36 @@ namespace DotNetNuke.UI.Skins
         /// To get the default skin for the portal use <see cref="IPortalSettings.DefaultPortalSkin"/> instead.
         /// </remarks>
         /// <returns>The global default skin.</returns>
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetDefaultSkinSrc)} instead.")]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.GetDefaultThemeSource)} instead.")]
         public static partial string GetDefaultPortalSkin()
         {
             SkinDefaults defaultSkin = SkinDefaults.GetSkinDefaults(SkinDefaultType.SkinInfo);
             return "[G]" + RootSkin + defaultSkin.Folder + defaultSkin.DefaultName;
         }
 
-        /// <inheritdoc cref="ISkinService.GetSkinByPackageID" />
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetSkinPackageById)} instead.")]
+        /// <inheritdoc cref="IThemeService.GetSkinByPackageID" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.GetThemePackageById)} instead.")]
         public static partial SkinPackageInfo GetSkinByPackageID(int packageID)
         {
             return CBO.FillObject<SkinPackageInfo>(DataProvider.Instance().GetSkinByPackageID(packageID));
         }
 
-        /// <inheritdoc cref="ISkinService.GetSkinPackage" />]
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetSkinPackage)} instead.")]
+        /// <inheritdoc cref="IThemeService.GetThemePackage" />]
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.GetThemePackage)} instead.")]
         public static partial SkinPackageInfo GetSkinPackage(int portalId, string skinName, string skinType)
         {
             return CBO.FillObject<SkinPackageInfo>(DataProvider.Instance().GetSkinPackage(portalId, skinName, skinType));
         }
 
-        /// <inheritdoc cref="ISkinService.GetSkinsInFolder" />
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetSkinsInFolder)} instead.")]
+        /// <inheritdoc cref="IThemeService.GetThemesInFolder" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.GetThemesInFolder)} instead.")]
         public static partial List<KeyValuePair<string, string>> GetSkins(PortalInfo portalInfo, string skinRoot, SkinScope scope)
         {
             return GetSkins((IPortalInfo)portalInfo, skinRoot, scope);
         }
 
-        /// <inheritdoc cref="ISkinService.GetSkinsInFolder" />
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.GetSkinsInFolder)} instead.")]
+        /// <inheritdoc cref="IThemeService.GetThemesInFolder" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.GetThemesInFolder)} instead.")]
         public static partial List<KeyValuePair<string, string>> GetSkins(IPortalInfo portalInfo, string skinRoot, SkinScope scope)
         {
             var skins = new List<KeyValuePair<string, string>>();
@@ -281,15 +281,15 @@ namespace DotNetNuke.UI.Skins
             return skins;
         }
 
-        /// <inheritdoc cref="ISkinService.IsGlobalSkin" />
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.IsGlobalSkin)} instead.")]
+        /// <inheritdoc cref="IThemeService.IsGlobalTheme" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.IsGlobalTheme)} instead.")]
         public static partial bool IsGlobalSkin(string skinSrc)
         {
             return skinSrc.Contains(Globals.HostPath);
         }
 
-        /// <inheritdoc cref="ISkinService.SetSkin" />
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.SetSkin)} instead.")]
+        /// <inheritdoc cref="IThemeService.SetTheme" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.SetTheme)} instead.")]
         public static partial void SetSkin(string skinRoot, int portalId, SkinType skinType, string skinSrc)
         {
             var selectedCultureCode = LocaleController.Instance.GetCurrentLocale(portalId).Code;
@@ -350,18 +350,18 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <inheritdoc cref="ISkinService.UpdateSkin" />
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.UpdateSkin)} instead.")]
+        /// <inheritdoc cref="IThemeService.UpdateTheme" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.UpdateTheme)} instead.")]
         public static partial void UpdateSkin(int skinID, string skinSrc)
         {
             DataProvider.Instance().UpdateSkin(skinID, skinSrc);
         }
 
-        /// <inheritdoc cref="ISkinService.UpdateSkinPackage" />
-        [DnnDeprecated(9, 13, 1, $"Use {nameof(ISkinService)}.{nameof(ISkinService.UpdateSkin)} instead.")]
-        public static partial void UpdateSkinPackage(SkinPackageInfo skinPackage)
+        /// <inheritdoc cref="IThemeService.UpdateThemePackage" />
+        [DnnDeprecated(9, 13, 1, $"Use {nameof(IThemeService)}.{nameof(IThemeService.UpdateTheme)} instead.")]
+        public static partial void UpdateSkinPackage(SkinPackageInfo themePackage)
         {
-            UpdateSkinPackage((ISkinPackageInfo)skinPackage);
+            UpdateSkinPackage((IThemePackageInfo)themePackage);
         }
 
         [DnnDeprecated(10, 0, 0, "No replacement")]
@@ -492,119 +492,119 @@ namespace DotNetNuke.UI.Skins
         }
 
         /// <inheritdoc />
-        ISkinPackageInfo ISkinService.GetSkinPackageById(int packageId) => GetSkinByPackageID(packageId);
+        IThemePackageInfo IThemeService.GetThemePackageById(int packageId) => GetSkinByPackageID(packageId);
 
         /// <inheritdoc />
-        ISkinPackageInfo ISkinService.GetSkinPackage(int portalId, string skinName, SkinPackageType packageType)
-            => GetSkinPackage(portalId, skinName, SkinUtils.ToDatabaseName(packageType));
+        IThemePackageInfo IThemeService.GetThemePackage(int portalId, string themeName, ThemePackageType packageType)
+            => GetSkinPackage(portalId, themeName, SkinUtils.ToDatabaseName(packageType));
 
         /// <inheritdoc />
-        ISkinInfo ISkinService.CreateSkin() => new SkinInfo();
+        IThemeInfo IThemeService.CreateTheme() => new SkinInfo();
 
         /// <inheritdoc />
-        ISkinPackageInfo ISkinService.CreateSkinPackage() => new SkinPackageInfo();
+        IThemePackageInfo IThemeService.CreateThemePackage() => new SkinPackageInfo();
 
         /// <inheritdoc />
-        int ISkinService.AddSkin(ISkinInfo skin) => AddSkin(skin.SkinPackageId, skin.SkinSrc);
+        int IThemeService.AddTheme(IThemeInfo theme) => AddSkin(theme.ThemePackageId, theme.ThemeSource);
 
         /// <inheritdoc />
-        int ISkinService.AddSkinPackage(ISkinPackageInfo skinPackage) => AddSkinPackage(skinPackage);
+        int IThemeService.AddThemePackage(IThemePackageInfo themePackage) => AddSkinPackage(themePackage);
 
         /// <inheritdoc />
-        bool ISkinService.CanDeleteSkinFolder(string folderPath, string portalHomeDirMapPath)
+        bool IThemeService.CanDeleteThemeFolder(string folderPath, string portalHomeDirMapPath)
             => CanDeleteSkin(folderPath, portalHomeDirMapPath);
 
         /// <inheritdoc />
-        void ISkinService.DeleteSkin(ISkinInfo skin) => DeleteSkin(skin.SkinId);
+        void IThemeService.DeleteTheme(IThemeInfo theme) => DeleteSkin(theme.ThemeId);
 
         /// <inheritdoc />
-        void ISkinService.DeleteSkinPackage(ISkinPackageInfo skinPackage) => DeleteSkinPackage(skinPackage);
+        void IThemeService.DeleteThemePackage(IThemePackageInfo themePackage) => DeleteSkinPackage(themePackage);
 
         /// <inheritdoc />
-        string ISkinService.GetFolderName(SkinPackageType packageType)
+        string IThemeService.GetFolderName(ThemePackageType packageType)
         {
             return packageType switch
             {
-                SkinPackageType.Skin => RootSkin,
-                SkinPackageType.Container => RootContainer,
+                ThemePackageType.Theme => RootSkin,
+                ThemePackageType.Container => RootContainer,
                 _ => throw new ArgumentOutOfRangeException(nameof(packageType), packageType, "The skin package type is not supported.")
             };
         }
 
         /// <inheritdoc />
-        string ISkinService.GetDefaultSkinSrc(SkinPackageType packageType, DotNetNuke.Abstractions.Skins.SkinType skinType)
+        string IThemeService.GetDefaultThemeSource(ThemePackageType packageType, DotNetNuke.Abstractions.Themes.ThemeType themeType)
         {
-            return (packageType, skinType) switch
+            return (packageType, themeType) switch
             {
-                (SkinPackageType.Skin, DotNetNuke.Abstractions.Skins.SkinType.Site) => GetDefaultPortalSkin(),
-                (SkinPackageType.Skin, DotNetNuke.Abstractions.Skins.SkinType.Edit) => GetDefaultAdminSkin(),
-                (SkinPackageType.Container, DotNetNuke.Abstractions.Skins.SkinType.Site) => GetDefaultPortalContainer(),
-                (SkinPackageType.Container, DotNetNuke.Abstractions.Skins.SkinType.Edit) => GetDefaultAdminContainer(),
+                (ThemePackageType.Theme, DotNetNuke.Abstractions.Themes.ThemeType.Site) => GetDefaultPortalSkin(),
+                (ThemePackageType.Theme, DotNetNuke.Abstractions.Themes.ThemeType.Edit) => GetDefaultAdminSkin(),
+                (ThemePackageType.Container, DotNetNuke.Abstractions.Themes.ThemeType.Site) => GetDefaultPortalContainer(),
+                (ThemePackageType.Container, DotNetNuke.Abstractions.Themes.ThemeType.Edit) => GetDefaultAdminContainer(),
                 _ => throw new ArgumentOutOfRangeException(nameof(packageType), packageType, "The skin package type is not supported.")
             };
         }
 
         /// <inheritdoc />
-        string ISkinService.FormatSkinPath(string skinSrc) => FormatSkinPath(skinSrc);
+        string IThemeService.FormatThemePath(string themeSource) => FormatSkinPath(themeSource);
 
         /// <inheritdoc />
-        string ISkinService.FormatSkinSrc(string skinSrc, IPortalSettings portalSettings)
-            => FormatSkinSrc(skinSrc, portalSettings);
+        string IThemeService.FormatThemeSource(string themeSource, IPortalSettings portalSettings)
+            => FormatSkinSrc(themeSource, portalSettings);
 
         /// <inheritdoc />
-        bool ISkinService.IsGlobalSkin(string skinSrc) => IsGlobalSkin(skinSrc);
+        bool IThemeService.IsGlobalTheme(string themeSource) => IsGlobalSkin(themeSource);
 
         /// <inheritdoc />
-        void ISkinService.SetSkin(SkinPackageType packageType, int portalId, DotNetNuke.Abstractions.Skins.SkinType skinType, string skinSrc)
+        void IThemeService.SetTheme(ThemePackageType packageType, int portalId, DotNetNuke.Abstractions.Themes.ThemeType themeType, string themeSource)
         {
-            var librarySkinType = skinType switch
+            var librarySkinType = themeType switch
             {
-                Abstractions.Skins.SkinType.Site => SkinType.Portal,
-                Abstractions.Skins.SkinType.Edit => SkinType.Admin,
-                _ => throw new ArgumentOutOfRangeException(nameof(skinType), skinType, "The skin type is not supported."),
+                Abstractions.Themes.ThemeType.Site => SkinType.Portal,
+                Abstractions.Themes.ThemeType.Edit => SkinType.Admin,
+                _ => throw new ArgumentOutOfRangeException(nameof(themeType), themeType, "The theme type is not supported."),
             };
 
             var skinRoot = packageType switch
             {
-                SkinPackageType.Skin => RootSkin,
-                SkinPackageType.Container => RootContainer,
-                _ => throw new ArgumentOutOfRangeException(nameof(packageType), packageType, "The skin package type is not supported."),
+                ThemePackageType.Theme => RootSkin,
+                ThemePackageType.Container => RootContainer,
+                _ => throw new ArgumentOutOfRangeException(nameof(packageType), packageType, "The theme package type is not supported."),
             };
 
-            SetSkin(skinRoot, portalId, librarySkinType, skinSrc);
+            SetSkin(skinRoot, portalId, librarySkinType, themeSource);
         }
 
         /// <inheritdoc />
-        void ISkinService.UpdateSkin(ISkinInfo skin) => UpdateSkin(skin.SkinId, skin.SkinSrc);
+        void IThemeService.UpdateTheme(IThemeInfo theme) => UpdateSkin(theme.ThemeId, theme.ThemeSource);
 
         /// <inheritdoc />
-        void ISkinService.UpdateSkinPackage(ISkinPackageInfo skinPackage) => UpdateSkinPackage(skinPackage);
+        void IThemeService.UpdateThemePackage(IThemePackageInfo themePackage) => UpdateSkinPackage(themePackage);
 
         /// <inheritdoc />
-        IEnumerable<KeyValuePair<string, string>> ISkinService.GetSkinsInFolder(IPortalInfo portalInfo, DotNetNuke.Abstractions.Skins.SkinType skinType, SkinFolder folder)
+        IEnumerable<KeyValuePair<string, string>> IThemeService.GetThemesInFolder(IPortalInfo portalInfo, DotNetNuke.Abstractions.Themes.ThemeType themeRoot, ThemeFolder folder)
         {
             var libraryScope = folder switch
             {
-                SkinFolder.All => SkinScope.All,
-                SkinFolder.Host => SkinScope.Host,
-                SkinFolder.Portal => SkinScope.Site,
+                ThemeFolder.All => SkinScope.All,
+                ThemeFolder.Host => SkinScope.Host,
+                ThemeFolder.Portal => SkinScope.Site,
                 _ => throw new ArgumentOutOfRangeException(nameof(folder), folder, "The skin scope is not supported."),
             };
 
-            var skinRoot = skinType switch
+            var skinRoot = themeRoot switch
             {
-                Abstractions.Skins.SkinType.Site => RootSkin,
-                Abstractions.Skins.SkinType.Edit => RootContainer,
-                _ => throw new ArgumentOutOfRangeException(nameof(skinType), skinType, "The skin type is not supported."),
+                Abstractions.Themes.ThemeType.Site => RootSkin,
+                Abstractions.Themes.ThemeType.Edit => RootContainer,
+                _ => throw new ArgumentOutOfRangeException(nameof(themeRoot), themeRoot, "The skin type is not supported."),
             };
 
             return GetSkins(portalInfo, skinRoot, libraryScope);
         }
 
-        /// <inheritdoc cref="ISkinService.FormatSkinSrc" />
-        private static string FormatSkinSrc(string skinSrc, IPortalSettings portalSettings)
+        /// <inheritdoc cref="IThemeService.FormatThemeSource" />
+        private static string FormatSkinSrc(string themeSource, IPortalSettings portalSettings)
         {
-            string strSkinSrc = skinSrc;
+            string strSkinSrc = themeSource;
             if (!string.IsNullOrEmpty(strSkinSrc))
             {
                 switch (strSkinSrc.Substring(0, 3).ToLowerInvariant())
@@ -624,34 +624,34 @@ namespace DotNetNuke.UI.Skins
             return strSkinSrc;
         }
 
-        /// <inheritdoc cref="ISkinService.DeleteSkinPackage" />
-        private static void DeleteSkinPackage(ISkinPackageInfo skinPackage)
+        /// <inheritdoc cref="IThemeService.DeleteThemePackage" />
+        private static void DeleteSkinPackage(IThemePackageInfo themePackage)
         {
-            DataProvider.Instance().DeleteSkinPackage(skinPackage.SkinPackageId);
-            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINPACKAGE_DELETED);
+            DataProvider.Instance().DeleteSkinPackage(themePackage.ThemePackageId);
+            EventLogController.Instance.AddLog(themePackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINPACKAGE_DELETED);
         }
 
-        /// <inheritdoc cref="ISkinService.AddSkinPackage" />
-        private static int AddSkinPackage(ISkinPackageInfo skinPackage)
+        /// <inheritdoc cref="IThemeService.AddThemePackage" />
+        private static int AddSkinPackage(IThemePackageInfo themePackage)
         {
-            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINPACKAGE_CREATED);
-            return DataProvider.Instance().AddSkinPackage(skinPackage.PackageId, skinPackage.PortalId, skinPackage.SkinName, SkinUtils.ToDatabaseName(skinPackage.SkinType), UserController.Instance.GetCurrentUserInfo().UserID);
+            EventLogController.Instance.AddLog(themePackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINPACKAGE_CREATED);
+            return DataProvider.Instance().AddSkinPackage(themePackage.PackageId, themePackage.PortalId, themePackage.ThemeName, SkinUtils.ToDatabaseName(themePackage.ThemeType), UserController.Instance.GetCurrentUserInfo().UserID);
         }
 
-        /// <inheritdoc cref="ISkinService.UpdateSkinPackage" />
-        private static void UpdateSkinPackage(ISkinPackageInfo skinPackage)
+        /// <inheritdoc cref="IThemeService.UpdateThemePackage" />
+        private static void UpdateSkinPackage(IThemePackageInfo themePackage)
         {
             DataProvider.Instance().UpdateSkinPackage(
-                skinPackage.SkinPackageId,
-                skinPackage.PackageId,
-                skinPackage.PortalId,
-                skinPackage.SkinName,
-                SkinUtils.ToDatabaseName(skinPackage.SkinType),
+                themePackage.ThemePackageId,
+                themePackage.PackageId,
+                themePackage.PortalId,
+                themePackage.ThemeName,
+                SkinUtils.ToDatabaseName(themePackage.ThemeType),
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(skinPackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINPACKAGE_UPDATED);
-            foreach (var skin in skinPackage.Skins)
+            EventLogController.Instance.AddLog(themePackage, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINPACKAGE_UPDATED);
+            foreach (var skin in themePackage.Themes)
             {
-                UpdateSkin(skin.SkinId, skin.SkinSrc);
+                UpdateSkin(skin.ThemeId, skin.ThemeSource);
             }
         }
 

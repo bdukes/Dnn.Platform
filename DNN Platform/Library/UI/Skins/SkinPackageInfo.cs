@@ -10,7 +10,7 @@ namespace DotNetNuke.UI.Skins
     using System.Xml.Serialization;
 
     using DotNetNuke.Abstractions.Collections;
-    using DotNetNuke.Abstractions.Skins;
+    using DotNetNuke.Abstractions.Themes;
     using DotNetNuke.Collections;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
@@ -22,7 +22,7 @@ namespace DotNetNuke.UI.Skins
     ///
     /// <summary>    Handles the Business Object for Skins.</summary>
     [Serializable]
-    public class SkinPackageInfo : BaseEntityInfo, IHydratable, ISkinPackageInfo
+    public class SkinPackageInfo : BaseEntityInfo, IHydratable, IThemePackageInfo
     {
         private int packageId = Null.NullInteger;
         private int portalId = Null.NullInteger;
@@ -30,72 +30,73 @@ namespace DotNetNuke.UI.Skins
         private int skinPackageId = Null.NullInteger;
         private string skinType;
         private Dictionary<int, string> skins = new Dictionary<int, string>();
-        private List<SkinInfo> skinsList = new List<SkinInfo>();
-        private AbstractionList<ISkinInfo, SkinInfo> abstractSkins;
+        private List<SkinInfo> themes = new List<SkinInfo>();
+        private AbstractionList<IThemeInfo, SkinInfo> abstractSkins;
 
-        /// <inheritdoc cref="ISkinPackageInfo.PackageId"/>
-        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(ISkinPackageInfo)}.{nameof(ISkinPackageInfo.PackageId)} instead. Scheduled for removal in v11.0.0.")]
+        /// <inheritdoc cref="IThemePackageInfo.PackageId"/>
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IThemePackageInfo)}.{nameof(IThemePackageInfo.PackageId)} instead. Scheduled for removal in v11.0.0.")]
         public int PackageID
         {
             get
             {
-                return ((ISkinPackageInfo)this).PackageId;
+                return ((IThemePackageInfo)this).PackageId;
             }
 
             set
             {
-                ((ISkinPackageInfo)this).PackageId = value;
+                ((IThemePackageInfo)this).PackageId = value;
             }
         }
 
-        /// <inheritdoc cref="ISkinPackageInfo.SkinPackageId"/>
-        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(ISkinPackageInfo)}.{nameof(ISkinPackageInfo.SkinPackageId)} instead. Scheduled for removal in v11.0.0.")]
+        /// <inheritdoc cref="IThemePackageInfo.ThemePackageId" />
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IThemePackageInfo)}.{nameof(IThemePackageInfo.ThemePackageId)} instead. Scheduled for removal in v11.0.0.")]
         public int SkinPackageID
         {
             get
             {
-                return ((ISkinPackageInfo)this).SkinPackageId;
+                return ((IThemePackageInfo)this).ThemePackageId;
             }
 
             set
             {
-                ((ISkinPackageInfo)this).SkinPackageId = value;
+                ((IThemePackageInfo)this).ThemePackageId = value;
             }
         }
 
-        /// <inheritdoc cref="ISkinPackageInfo.PortalId"/>
-        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(ISkinPackageInfo)}.{nameof(ISkinPackageInfo.PortalId)} instead. Scheduled for removal in v11.0.0.")]
+        /// <inheritdoc cref="IThemePackageInfo.PortalId"/>
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IThemePackageInfo)}.{nameof(IThemePackageInfo.PortalId)} instead. Scheduled for removal in v11.0.0.")]
         public int PortalID
         {
             get
             {
-                return ((ISkinPackageInfo)this).PortalId;
+                return ((IThemePackageInfo)this).PortalId;
             }
 
             set
             {
-                ((ISkinPackageInfo)this).PortalId = value;
+                ((IThemePackageInfo)this).PortalId = value;
             }
+        }
+
+        /// <inheritdoc cref="IThemePackageInfo.ThemeName" />
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IThemePackageInfo)}.{nameof(IThemePackageInfo.ThemeName)} instead. Scheduled for removal in v11.0.0.")]
+        public string SkinName
+        {
+            get => this.ThemeName;
+            set => this.ThemeName = value;
         }
 
         /// <inheritdoc/>
-        public string SkinName
+        public string ThemeName
         {
-            get
-            {
-                return this.skinName;
-            }
-
-            set
-            {
-                this.skinName = value;
-            }
+            get => this.skinName;
+            set => this.skinName = value;
         }
 
-        /// <summary>Gets or sets a dictionary mapping from <see cref="SkinInfo.SkinId"/> to <see cref="SkinInfo.SkinSrc"/>.</summary>
+        /// <summary>Gets or sets a dictionary mapping from <see cref="SkinInfo.ThemeId"/> to <see cref="SkinInfo.ThemeSource"/>.</summary>
         [XmlIgnore]
         [JsonIgnore]
-        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(ISkinPackageInfo)}.{nameof(ISkinPackageInfo.Skins)} instead. Scheduled for removal in v11.0.0.")]
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IThemePackageInfo)}.{nameof(IThemePackageInfo.Themes)} instead. Scheduled for removal in v11.0.0.")]
         public Dictionary<int, string> Skins
         {
             get
@@ -109,23 +110,24 @@ namespace DotNetNuke.UI.Skins
             }
         }
 
-        /// <inheritdoc cref="ISkinPackageInfo.Skins"/>
+        /// <inheritdoc cref="IThemePackageInfo.Themes" />
         [XmlIgnore]
         [JsonIgnore]
-        public List<SkinInfo> SkinsList
+        public List<SkinInfo> Themes
         {
             get
             {
-                return this.skinsList;
+                return this.themes;
             }
 
             set
             {
-                this.skinsList = value;
+                this.themes = value;
             }
         }
 
-        /// <inheritdoc cref="ISkinPackageInfo.SkinType"/>
+        /// <inheritdoc cref="IThemePackageInfo.ThemeType" />
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IThemePackageInfo)}.{nameof(IThemePackageInfo.ThemeType)} instead. Scheduled for removal in v11.0.0.")]
         public string SkinType
         {
             get
@@ -144,19 +146,19 @@ namespace DotNetNuke.UI.Skins
         {
             get
             {
-                return ((ISkinPackageInfo)this).SkinPackageId;
+                return ((IThemePackageInfo)this).ThemePackageId;
             }
 
             set
             {
-                ((ISkinPackageInfo)this).SkinPackageId = value;
+                ((IThemePackageInfo)this).ThemePackageId = value;
             }
         }
 
         /// <inheritdoc/>
         [XmlIgnore]
         [JsonIgnore]
-        int ISkinPackageInfo.PackageId
+        int IThemePackageInfo.PackageId
         {
             get => this.packageId;
             set => this.packageId = value;
@@ -165,7 +167,7 @@ namespace DotNetNuke.UI.Skins
         /// <inheritdoc/>
         [XmlIgnore]
         [JsonIgnore]
-        int ISkinPackageInfo.SkinPackageId
+        int IThemePackageInfo.ThemePackageId
         {
             get => this.skinPackageId;
             set => this.skinPackageId = value;
@@ -174,18 +176,18 @@ namespace DotNetNuke.UI.Skins
         /// <inheritdoc/>
         [XmlIgnore]
         [JsonIgnore]
-        IObjectList<ISkinInfo> ISkinPackageInfo.Skins
+        IObjectList<IThemeInfo> IThemePackageInfo.Themes
         {
             get
             {
-                return this.abstractSkins ??= new AbstractionList<ISkinInfo, SkinInfo>(this.SkinsList);
+                return this.abstractSkins ??= new AbstractionList<IThemeInfo, SkinInfo>(this.Themes);
             }
         }
 
         /// <inheritdoc/>
         [XmlIgnore]
         [JsonIgnore]
-        SkinPackageType ISkinPackageInfo.SkinType
+        ThemePackageType IThemePackageInfo.ThemeType
         {
             get => SkinUtils.FromDatabaseName(this.SkinType);
             set => this.SkinType = SkinUtils.ToDatabaseName(value);
@@ -194,7 +196,7 @@ namespace DotNetNuke.UI.Skins
         /// <inheritdoc/>
         [XmlIgnore]
         [JsonIgnore]
-        int ISkinPackageInfo.PortalId
+        int IThemePackageInfo.PortalId
         {
             get => this.portalId;
             set => this.portalId = value;
@@ -203,10 +205,10 @@ namespace DotNetNuke.UI.Skins
         /// <inheritdoc/>
         public void Fill(IDataReader dr)
         {
-            var @this = (ISkinPackageInfo)this;
-            @this.SkinPackageId = Null.SetNullInteger(dr["SkinPackageID"]);
+            var @this = (IThemePackageInfo)this;
+            @this.ThemePackageId = Null.SetNullInteger(dr["SkinPackageID"]);
             @this.PackageId = Null.SetNullInteger(dr["PackageID"]);
-            @this.SkinName = Null.SetNullString(dr["SkinName"]);
+            @this.ThemeName = Null.SetNullString(dr["SkinName"]);
             this.SkinType = Null.SetNullString(dr["SkinType"]);
 
             // Call the base classes fill method to populate base class properties
@@ -221,16 +223,16 @@ namespace DotNetNuke.UI.Skins
                     {
                         var skinSrc = Null.SetNullString(dr["SkinSrc"]);
                         this.skins[skinId] = skinSrc;
-                        this.skinsList.Add(new SkinInfo
+                        this.themes.Add(new SkinInfo
                         {
-                            SkinId = skinId,
-                            SkinSrc = skinSrc,
-                            SkinPackageId = @this.SkinPackageId,
+                            ThemeId = skinId,
+                            ThemeSource = skinSrc,
+                            ThemePackageId = @this.ThemePackageId,
                             PortalId = @this.PortalId,
                             SkinRoot = SkinUtils.FromDatabaseName(this.SkinType) switch
                             {
-                                SkinPackageType.Container => SkinController.RootContainer,
-                                SkinPackageType.Skin => SkinController.RootSkin,
+                                ThemePackageType.Container => SkinController.RootContainer,
+                                ThemePackageType.Theme => SkinController.RootSkin,
                                 _ => throw new ArgumentOutOfRangeException(nameof(this.SkinType), this.SkinType, "Invalid skin type."),
                             },
                         });

@@ -5,14 +5,14 @@ namespace DotNetNuke.UI.Skins
 {
     using System;
 
-    using DotNetNuke.Abstractions.Skins;
+    using DotNetNuke.Abstractions.Themes;
 
     /// Project  : DotNetNuke
     /// Class    : SkinInfo
     ///
     /// <summary>    Handles the Business Object for Skins.</summary>
     [Serializable]
-    public class SkinInfo : ISkinInfo
+    public class SkinInfo : IThemeInfo
     {
         private int portalId;
         private int skinId;
@@ -21,83 +21,68 @@ namespace DotNetNuke.UI.Skins
         private string skinSrc;
         private SkinType skinType;
 
+        /// <inheritdoc cref="IThemeInfo.ThemeId" />
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IThemeInfo)}.{nameof(IThemeInfo.ThemeId)} instead. Scheduled for removal in v11.0.0.")]
         public int SkinId
         {
-            get
-            {
-                return this.skinId;
-            }
-
-            set
-            {
-                this.skinId = value;
-            }
+            get => this.ThemeId;
+            set => this.ThemeId = value;
         }
 
+        /// <inheritdoc />
+        public int ThemeId
+        {
+            get => this.skinId;
+            set => this.skinId = value;
+        }
+
+        /// <inheritdoc cref="IThemeInfo.ThemePackageId" />
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IThemeInfo)}.{nameof(IThemeInfo.ThemePackageId)} instead. Scheduled for removal in v11.0.0.")]
         public int SkinPackageId
         {
-            get
-            {
-                return this.skinPackageId;
-            }
+            get => this.ThemePackageId;
+            set => this.ThemePackageId = value;
+        }
 
-            set
-            {
-                this.skinPackageId = value;
-            }
+        /// <inheritdoc />
+        public int ThemePackageId
+        {
+            get => this.skinPackageId;
+            set => this.skinPackageId = value;
         }
 
         public int PortalId
         {
-            get
-            {
-                return this.portalId;
-            }
-
-            set
-            {
-                this.portalId = value;
-            }
+            get => this.portalId;
+            set => this.portalId = value;
         }
 
         public string SkinRoot
         {
-            get
-            {
-                return this.skinRoot;
-            }
-
-            set
-            {
-                this.skinRoot = value;
-            }
+            get => this.skinRoot;
+            set => this.skinRoot = value;
         }
 
         [Obsolete("Deprecated in DotNetNuke 10.0.0. No replacement. Scheduled removal in v12.0.0.")]
         public SkinType SkinType
         {
-            get
-            {
-                return this.skinType;
-            }
-
-            set
-            {
-                this.skinType = value;
-            }
+            get => this.skinType;
+            set => this.skinType = value;
         }
 
+        /// <inheritdoc cref="IThemeInfo.ThemeSource" />
+        [Obsolete($"Deprecated in DotNetNuke 9.13.1. Use {nameof(IThemeInfo)}.{nameof(IThemeInfo.ThemeSource)} instead. Scheduled for removal in v11.0.0.")]
         public string SkinSrc
         {
-            get
-            {
-                return this.skinSrc;
-            }
+            get => this.ThemeSource;
+            set => this.ThemeSource = value;
+        }
 
-            set
-            {
-                this.skinSrc = value;
-            }
+        /// <inheritdoc />
+        public string ThemeSource
+        {
+            get => this.skinSrc;
+            set => this.skinSrc = value;
         }
     }
 }

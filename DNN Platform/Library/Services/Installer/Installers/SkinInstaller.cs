@@ -18,8 +18,8 @@ namespace DotNetNuke.Services.Installer.Installers
     {
         private readonly ArrayList skinFiles = new ArrayList();
 
-        private SkinPackageInfo skinPackage;
-        private SkinPackageInfo tempSkinPackage;
+        private SkinPackageInfo themePackage;
+        private SkinPackageInfo tempThemePackage;
         private string skinName = Null.NullString;
 
         /// <summary>Gets a list of allowable file extensions (in addition to the Host's List).</summary>
@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             get
             {
-                string physicalBasePath = this.RootPath + this.SkinRoot + "\\" + this.skinPackage.SkinName;
+                string physicalBasePath = this.RootPath + this.SkinRoot + "\\" + this.themePackage.ThemeName;
                 if (!physicalBasePath.EndsWith("\\"))
                 {
                     physicalBasePath += "\\";
@@ -135,16 +135,16 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 // Attempt to get the Skin Package
-                this.tempSkinPackage = SkinController.GetSkinPackage(this.skinPackage.PortalID, this.skinPackage.SkinName, this.SkinType);
-                if (this.tempSkinPackage == null)
+                this.tempThemePackage = SkinController.GetSkinPackage(this.themePackage.PortalID, this.themePackage.ThemeName, this.SkinType);
+                if (this.tempThemePackage == null)
                 {
                     bAdd = true;
-                    this.skinPackage.PackageID = this.Package.PackageID;
+                    this.themePackage.PackageID = this.Package.PackageID;
                 }
                 else
                 {
-                    this.skinPackage.SkinPackageID = this.tempSkinPackage.SkinPackageID;
-                    if (this.tempSkinPackage.PackageID != this.Package.PackageID)
+                    this.themePackage.SkinPackageID = this.tempThemePackage.SkinPackageID;
+                    if (this.tempThemePackage.PackageID != this.Package.PackageID)
                     {
                         this.Completed = false;
                         this.Log.AddFailure(Util.SKIN_Installed);
@@ -152,23 +152,23 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                     else
                     {
-                        this.skinPackage.PackageID = this.tempSkinPackage.PackageID;
+                        this.themePackage.PackageID = this.tempThemePackage.PackageID;
                     }
                 }
 
-                this.skinPackage.SkinType = this.SkinType;
+                this.themePackage.SkinType = this.SkinType;
                 if (bAdd)
                 {
                     // Add new skin package
-                    this.skinPackage.SkinPackageID = SkinController.AddSkinPackage(this.skinPackage);
+                    this.themePackage.SkinPackageID = SkinController.AddSkinPackage(this.themePackage);
                 }
                 else
                 {
                     // Update skin package
-                    SkinController.UpdateSkinPackage(this.skinPackage);
+                    SkinController.UpdateSkinPackage(this.themePackage);
                 }
 
-                this.Log.AddInfo(string.Format(Util.SKIN_Registered, this.skinPackage.SkinName));
+                this.Log.AddInfo(string.Format(Util.SKIN_Registered, this.themePackage.ThemeName));
 
                 // install (copy the files) by calling the base class
                 base.Install();
@@ -178,7 +178,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     this.Log.StartJob(Util.SKIN_BeginProcessing);
                     string strMessage = Null.NullString;
-                    var newSkin = new SkinFileProcessor(this.RootPath, this.SkinRoot, this.skinPackage.SkinName);
+                    var newSkin = new SkinFileProcessor(this.RootPath, this.SkinRoot, this.themePackage.ThemeName);
                     foreach (string skinFile in this.SkinFiles)
                     {
                         strMessage += newSkin.ProcessFile(skinFile, SkinParser.Portable);
@@ -186,13 +186,13 @@ namespace DotNetNuke.Services.Installer.Installers
                         switch (Path.GetExtension(skinFile))
                         {
                             case ".htm":
-                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinFile.Replace("htm", "ascx"));
+                                SkinController.AddSkin(this.themePackage.SkinPackageID, skinFile.Replace("htm", "ascx"));
                                 break;
                             case ".html":
-                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinFile.Replace("html", "ascx"));
+                                SkinController.AddSkin(this.themePackage.SkinPackageID, skinFile.Replace("html", "ascx"));
                                 break;
                             case ".ascx":
-                                SkinController.AddSkin(this.skinPackage.SkinPackageID, skinFile);
+                                SkinController.AddSkin(this.themePackage.SkinPackageID, skinFile);
                                 break;
                         }
                     }
@@ -221,7 +221,7 @@ namespace DotNetNuke.Services.Installer.Installers
         public override void Rollback()
         {
             // If Temp Skin exists then we need to update the DataStore with this
-            if (this.tempSkinPackage == null)
+            if (this.tempThemePackage == null)
             {
                 // No Temp Skin - Delete newly added Skin
                 this.DeleteSkinPackage();
@@ -229,7 +229,7 @@ namespace DotNetNuke.Services.Installer.Installers
             else
             {
                 // Temp Skin - Rollback to Temp
-                SkinController.UpdateSkinPackage(this.tempSkinPackage);
+                SkinController.UpdateSkinPackage(this.tempThemePackage);
             }
 
             // Call base class to prcoess files
@@ -272,11 +272,11 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <param name="nav">The XPathNavigator representing the node.</param>
         protected override void ReadCustomManifest(XPathNavigator nav)
         {
-            this.skinPackage = new SkinPackageInfo();
-            this.skinPackage.PortalID = this.Package.PortalID;
+            this.themePackage = new SkinPackageInfo();
+            this.themePackage.PortalID = this.Package.PortalID;
 
             // Get the Skin name
-            this.skinPackage.SkinName = Util.ReadElement(nav, this.SkinNameNodeName);
+            this.themePackage.ThemeName = Util.ReadElement(nav, this.SkinNameNodeName);
 
             // Call base class
             base.ReadCustomManifest(nav);
@@ -307,13 +307,13 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 // Attempt to get the Authentication Service
-                SkinPackageInfo skinPackage = SkinController.GetSkinByPackageID(this.Package.PackageID);
-                if (skinPackage != null)
+                SkinPackageInfo themePackage = SkinController.GetSkinByPackageID(this.Package.PackageID);
+                if (themePackage != null)
                 {
-                    SkinController.DeleteSkinPackage(skinPackage);
+                    SkinController.DeleteSkinPackage(themePackage);
                 }
 
-                this.Log.AddInfo(string.Format(Util.SKIN_UnRegistered, skinPackage.SkinName));
+                this.Log.AddInfo(string.Format(Util.SKIN_UnRegistered, themePackage.ThemeName));
             }
             catch (Exception ex)
             {

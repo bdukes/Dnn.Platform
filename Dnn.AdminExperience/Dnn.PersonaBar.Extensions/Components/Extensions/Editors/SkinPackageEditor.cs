@@ -24,7 +24,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             var skin = SkinController.GetSkinByPackageID(package.PackageID);
             var detail = new SkinPackageDetailDto(portalId, package)
             {
-                ThemePackageName = skin.SkinName,
+                ThemePackageName = skin.ThemeName,
                 ReadOnly = !isHostUser,
             };
 
@@ -48,7 +48,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
                     if (packageSettings.EditorActions.TryGetValue("themePackageName", out value)
                         && !string.IsNullOrEmpty(value))
                     {
-                        skin.SkinName = value;
+                        skin.ThemeName = value;
                         SkinController.UpdateSkinPackage(skin);
                     }
                 }

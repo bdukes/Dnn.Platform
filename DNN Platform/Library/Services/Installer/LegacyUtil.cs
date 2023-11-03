@@ -339,15 +339,15 @@ namespace DotNetNuke.Services.Installer
             }
         }
 
-        private static PackageInfo CreateSkinPackage(SkinPackageInfo skin)
+        private static PackageInfo CreateSkinPackage(SkinPackageInfo theme)
         {
             // Create a Package
             var package = new PackageInfo(new InstallerInfo());
-            package.Name = skin.SkinName;
-            package.FriendlyName = skin.SkinName;
+            package.Name = theme.ThemeName;
+            package.FriendlyName = theme.ThemeName;
             package.Description = Null.NullString;
             package.Version = new Version(1, 0, 0);
-            package.PackageType = skin.SkinType;
+            package.PackageType = theme.SkinType;
             package.License = Util.PACKAGE_NoLicense;
 
             // See if the Skin is using a Namespace (or is a known skin)
@@ -360,7 +360,7 @@ namespace DotNetNuke.Services.Installer
         {
             string skinName = Path.GetFileNameWithoutExtension(skinFolder);
             var skin = new SkinPackageInfo();
-            skin.SkinName = skinName;
+            skin.ThemeName = skinName;
             skin.SkinType = skinType;
 
             // Create a Package
